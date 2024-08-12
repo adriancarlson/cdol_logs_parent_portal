@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <title>Discipline Logs</title>
+        ~[wc:guardian_header]
+        ~[wc:pscb_init]
+        <h1>Discipline Logs</h1>
+        <div class="box-round">
+            <table class="tablesorter grid" id="results">
+                <thead>
+                    <tr>
+                        <th class="left" width="5%">Entry Date</th>
+                        <th class="left" width="8%">Entry Time</th>
+                        <th class="left filter-select" width="15%">Author</th>
+                        <th class="left filter-select" width="10%">Log Type</th>
+                        <th class="left filter-select" width="10%">Sub Type</th>
+                        <th class="left" width="17%">Title</th>
+                        <th class="left" width="32%">Description</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ~[tlist_sql;
+                    WITH log_type_list AS (
+                    SELECT id logtypeid, name
+                    FROM gen
+                    WHERE cat = 'logtype'
+                    )
+                    SELECT
+                    log.entry_date, log.entry_time, log.entry_author, log_type_list.name,
+                    NVL(to_char(st.ValueT),log.subtype) subtype, log.subject, log.entry
+                    FROM log
+                    LEFT OUTER JOIN log_type_list
+                    ON log_type_list.logtypeid = log.logtypeid
+                    LEFT OUTER JOIN gen st ON (st.Name = to_char(log_type_list.logtypeid) AND st.value = log.subtype AND
+                    st.Cat =
+                    'subtype')
+                    WHERE log.studentID = '~(curstudid)'
+                    AND log.custom LIKE '%LogEntryCustom_1%'
+                    ORDER BY log.entry_date desc
+                    ;alternatecolor;nonemessage=
+                    <tr nodata>
+                        <td colspan="100%">No Records Found.</td>
+                    </tr>]
+                    <tr class="~[evenoddrow]">
+                        <td>~(entry_date;d)</td>
+                        <td>~(entry_time;l;format=time)</td>
+                        <td>~(entry_author)</td>
+                        <td>~(name)</td>
+                        <td>~(Subtype)</td>
+                        <td>~(lg.subject)</td>
+                        <td>~(logText)</td>
+                    </tr>
+                    [/tlist_sql]
+                </tbody>
+            </table>
+        </div>
+        <input id="activeNav" type="hidden" value="#btn-logs" />
+        ~[wc:guardian_footer]
+        </body>
+        <script>
+            $j(document).ready(function () {
+                setTimeout(function () {
+                    $j('#btn-logs').addClass('selected');
+                }, 300);
+            });
+        </script>
+
+</html>

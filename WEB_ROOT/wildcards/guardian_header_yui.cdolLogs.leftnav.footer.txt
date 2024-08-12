@@ -1,0 +1,20 @@
+~[if.~(f.in;value=~(curschoolid);in=102,104,160)=1]
+
+<script type="text/javascript">
+        $j(document).ready(function () {
+
+                var link = '<li id="btn-logs"><a href="/guardian/cdol_logs.html">Discipline Logs</a></li>';
+
+                if ($j('#btn-attendanceHistory').length > 0) $j('#btn-attendanceHistory').after(link);
+                else $j('#nav-main ul').first().append(link);
+
+        });
+</script>
+<style type="text/css">
+        #btn-logs {
+                background: url("/images/cdol/discipline.png") no-repeat;
+                background-size: 35px 35px;
+        }
+</style>
+
+[/if]

@@ -1,4 +1,4 @@
-~[if.~(f.in;value=~(curschoolid);in=102,104,111,160)=1]
+~[if.~(f.in;value=~(curschoolid);in=102,104,111,160,264)=1]
 
 <script type="text/javascript">
         $j(document).ready(function () {
